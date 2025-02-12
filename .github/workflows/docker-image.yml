@@ -54,9 +54,11 @@ jobs:
             cpu: .taskDefinition.cpu, 
             memory: .taskDefinition.memory, 
             requiresCompatibilities: .taskDefinition.requiresCompatibilities, 
-            tags: []
+            tags: [{"key": "dummy", "value": "value"}]  # Assurez-vous de mettre un tag valide
           }
         ')
+
+
        
         NEW_TASK_REVISION=$(aws ecs register-task-definition --cli-input-json "$NEW_TASK_DEFINITION" | jq -r '.taskDefinition.taskDefinitionArn')
 
