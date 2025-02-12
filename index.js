@@ -10,7 +10,7 @@ const app = express();
 app.use(bodyParser.json());
 
 app.use(entrepriseRouter);
-app.use(adresseRouter);
+app.use(adresseRouter); //Route address
 app.use(developpeurRouter);
 app.use(projetRouter);
 
