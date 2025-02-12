@@ -17,7 +17,7 @@ app.use(projetRouter);
 app.listen(3000, () => {
     console.log(`Le serveur écoute sur le port 3000`);
     mongoose
-    .connect('mongodb://localhost:27017/projet-finSession-db')
+    .connect('mongodb://172.31.2.59:27017/projet-finSession-db')
     .then(() => console.log('Connexion avec MongoDB effectuée avec succès'))
     .catch((err) => console.error('Connexion avec MongoDB échouée'));
 });
