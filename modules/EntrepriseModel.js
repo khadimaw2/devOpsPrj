@@ -5,7 +5,7 @@ const entrepriseSchema = new mongoose.Schema({
     dateCreation : { type : String, required : true },
     adresse : {type: mongoose.Schema.Types.ObjectId, ref: 'Adresse'},
     developpeurs : [{type: mongoose.Schema.Types.ObjectId, ref: 'Developpeur'}],
-    projets : [{type: mongoose.Schema.Types.ObjectId, ref: 'Adresse'}]
+    projets : [{type: mongoose.Schema.Types.ObjectId, ref: 'Projet'}]
 
 });
 
