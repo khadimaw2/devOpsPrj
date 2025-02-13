@@ -65,7 +65,6 @@ jobs:
             tags: [{"key": "app-version", "value": "$IMAGE_TAG"}]  # Tag dynamique avec la version de l'image
           }
         ')
-
         # Enregistrer la nouvelle définition de tâche
         NEW_TASK_REVISION=$(aws ecs register-task-definition --cli-input-json "$NEW_TASK_DEFINITION" | jq -r '.taskDefinition.taskDefinitionArn')
 
