@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.use(entrepriseRouter);
 app.use(adresseRouter); //Route address
 app.use(developpeurRouter);
-app.use(projetRouter);
+app.use(projetRouter); // Test deploiement sur main
 
 app.listen(3000, () => {
     console.log(`Le serveur écoute sur le port 3000`);
