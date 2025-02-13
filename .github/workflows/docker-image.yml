@@ -57,8 +57,7 @@ jobs:
             networkMode: .taskDefinition.networkMode, 
             cpu: .taskDefinition.cpu, 
             memory: .taskDefinition.memory, 
-            requiresCompatibilities: .taskDefinition.requiresCompatibilities, 
-            tags: [{"key": "app-version", "value": $IMAGE_TAG}]  # Tag dynamique avec la version de l'image
+            requiresCompatibilities: .taskDefinition.requiresCompatibilities
           }
         ')
 
