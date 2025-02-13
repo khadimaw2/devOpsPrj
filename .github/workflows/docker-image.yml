@@ -43,14 +43,10 @@ jobs:
         # Obtenir la définition de tâche actuelle
         TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition ${{ secrets.ECS_TASK_DEFINITION }}) || { echo "Failed to get task definition"; exit 1; }
 
-        # Vérification de la famille
-        FAMILY=$(echo "$TASK_DEFINITION" | jq -r '.taskDefinition.family')
-        if [ -z "$FAMILY" ]; then
-          echo "Family is missing in task definition"; exit 1;
-        fi
-
         # Créer la nouvelle définition de tâche avec l'image mise à jour
-        NEW_TASK_DEFINITION=$(echo "$TASK_DEFINITION" | jq --arg IMAGE "${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPOSITORY }}:$IMAGE_TAG" '
+        NEW_TASK_DEFINITION=$(echo "$TASK_DEFINITION" | jq \
+          --arg IMAGE "${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPOSITORY }}:$IMAGE_TAG" \
+          --arg IMAGE_TAG "$IMAGE_TAG" '
           .taskDefinition.containerDefinitions[0].image = $IMAGE |
           del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy) |
           {
@@ -62,9 +58,10 @@ jobs:
             cpu: .taskDefinition.cpu, 
             memory: .taskDefinition.memory, 
             requiresCompatibilities: .taskDefinition.requiresCompatibilities, 
-            tags: [{"key": "app-version", "value": "$IMAGE_TAG"}]  # Tag dynamique avec la version de l'image
+            tags: [{"key": "app-version", "value": $IMAGE_TAG}]  # Tag dynamique avec la version de l'image
           }
         ')
+
         # Enregistrer la nouvelle définition de tâche
         NEW_TASK_REVISION=$(aws ecs register-task-definition --cli-input-json "$NEW_TASK_DEFINITION" | jq -r '.taskDefinition.taskDefinitionArn')
 
@@ -74,3 +71,4 @@ jobs:
           --service ${{ secrets.ECS_SERVICE }} \
           --task-definition "$NEW_TASK_REVISION" \
           --force-new-deployment
+
